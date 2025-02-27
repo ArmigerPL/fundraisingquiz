@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Kompetencji Fundraisingowych</title>
+    <style>
+        :root {
+            --primary: #4E9CAF;
+            --secondary: #3E7D8F;
+            --accent: #FFA500;
+            --light: #F5F5F5;
+            --dark: #333333;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .intro {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .quiz-container {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px 0 15px 0;
+        }
+        
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid var(--primary);
+            background-color: rgba(78, 156, 175, 0.1);
+        }
+        
+        .question h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .options {
+            margin-top: 15px;
+        }
+        
+        .option {
+            display: block;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+        
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .result-container {
+            display: none;
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .result-details {
+            margin-bottom: 20px;
+        }
+        
+        .result-category {
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            border-radius: 10px;
+            background-color: var(--primary);
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .level-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .level-junior {
+            background-color: #4CAF50;
+        }
+        
+        .level-specialist {
+            background-color: #2196F3;
+        }
+        
+        .level-senior {
+            background-color: #9C27B0;
+        }
+        
+        .level-expert {
+            background-color: #F44336;
+        }
+        
+        .recommendations {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Quiz Kompetencji Fundraisingowych</h1>
+            <p>Sprawdź swój poziom umiejętności w fundraisingu</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="intro">
+            <p>Ten quiz pomoże Ci ocenić Twoje kompetencje w zakresie fundraisingu oraz określić poziom, na którym obecnie się znajdujesz.
+               Quiz składa się z pytań podzielonych na kategorie odpowiadające głównym obszarom kompetencji fundraisingowych.</p>
+            <p>Po ukończeniu testu otrzymasz szczegółową analizę swoich umiejętności oraz rekomendacje dotyczące rozwoju.</p>
+        </div>
+        
+        <div class="quiz-container" id="quiz">
+            <h2 class="section-title">Zrozumienie sektora pozarządowego i regulacji prawnych</h2>
+            
+            <div class="question" id="q1">
+                <h3>1. Która z poniższych cech najlepiej odróżnia organizacje non-profit od firm komercyjnych?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="a"> Nie mogą zatrudniać pracowników
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="b"> Nie mogą generować przychodu
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="c"> Zysk przeznaczany jest na cele statutowe zamiast dystrybucji do właścicieli
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="d"> Wszystkie organizacje non-profit są zwolnione z podatku VAT
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q2">
+                <h3>2. Jaka ulga podatkowa przysługuje darczyńcom indywidualnym wspierającym organizacje pożytku publicznego (OPP) w Polsce?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="a"> Odliczenie kwoty darowizny od przychodu
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="b"> Odliczenie kwoty darowizny od podatku
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="c"> Odliczenie kwoty darowizny od dochodu do wysokości 6% dochodu
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="d"> Zwolnienie z podatku od darowizn
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q3">
+                <h3>3. Które z poniższych elementów NIE są wymagane w umowie darowizny?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="a"> Dane identyfikacyjne darczyńcy i obdarowanego
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="b"> Przedmiot darowizny
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="c"> Oświadczenie o przekazaniu/przyjęciu darowizny
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="d"> Podpis notariusza
+                    </label>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Planowanie fundraisingowe</h2>
+            
+            <div class="question" id="q4">
+                <h3>4. Co to jest wskaźnik ROI w kontekście fundraisingu?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="a"> Liczba pozyskanych darczyńców podzielona przez liczbę wysłanych próśb o wsparcie
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="b"> Stosunek pozyskanych środków do kosztów poniesionych na zbiórkę
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="c"> Procent darczyńców jednorazowych, którzy stali się darczyńcami regularnymi
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="d"> Łączna suma darowizn w danym roku kalendarzowym
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q5">
+                <h3>5. Czym różni się strategia fundraisingowa od planu fundraisingowego?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="a"> Strategia dotyczy działań długoterminowych (ponad 3 lata), a plan określa działania krótkoterminowe (do 12 miesięcy)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="b"> Strategia dotyczy tylko dużych organizacji, a plan jest dla małych NGO
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="c"> Strategia dotyczy tylko pozyskiwania środków od biznesu, a plan obejmuje wszystkie źródła
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="d"> Strategia jest teoretyczna, a plan zawiera konkretne wskaźniki finansowe
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q6">
+                <h3>6. Które z poniższych elementów powinien zawierać dobrze przygotowany plan fundraisingowy?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="a"> Tylko cele finansowe do osiągnięcia
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="b"> Tylko metody i kanały pozyskiwania środków
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="c"> Cele, wskaźniki KPI, budżet, harmonogram działań i osoby odpowiedzialne
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="d"> Listę potencjalnych darczyńców i gotowe wzory pism
+                    </label>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Procesy fundraisingowe</h2>
+            
+            <div class="question" id="q7">
+                <h3>7. Czym jest cykl fundraisingowy?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="a"> Okresem jednego roku kalendarzowego, w którym prowadzone są działania fundraisingowe
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="b"> Cyklem działań od identyfikacji potencjalnego darczyńcy, przez pozyskanie darowizny, po podziękowanie i budowanie relacji
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="c"> Czasem potrzebnym na przejście darczyńcy z jednego poziomu piramidy darczyńców na kolejny
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="d"> Okresem pomiędzy rozpoczęciem a zakończeniem kampanii fundraisingowej
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q8">
+                <h3>8. Na czym polega segmentacja darczyńców?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="a"> Na przydzieleniu każdemu darczyńcy osobistego opiekuna
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="b"> Na podziale darczyńców według geograficznego miejsca zamieszkania
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="c"> Na grupowaniu darczyńców według określonych kryteriów (np. wielkość darowizny, częstotliwość wpłat, zainteresowania)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="d"> Na oddzieleniu darczyńców indywidualnych od biznesowych
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q9">
+                <h3>9. Co oznacza koncept organizacji darczyńcocentrycznej?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q9" value="a"> Organizacja, która skupia się wyłącznie na pozyskiwaniu funduszy
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="b"> Organizacja, w której procesy i struktura są zaprojektowane z perspektywy doświadczeń i potrzeb darczyńcy
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="c"> Organizacja, która większość decyzji konsultuje z darczyńcami
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="d"> Organizacja, która pozyskuje większość funduszy od jednego głównego darczyńcy
+                    </label>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Narzędzia fundraisingowe</h2>
+            
+            <div class="question" id="q10">
+                <h3>10. Które z poniższych narzędzi jest najbardziej odpowiednie do utrzymywania regularnego kontaktu z większą grupą darczyńców indywidualnych?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="a"> Indywidualne spotkania osobiste
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="b"> Newsletter email
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="c"> Listy tradycyjne
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="d"> Indywidualne rozmowy telefoniczne
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q11">
+                <h3>11. Jaką główną funkcję pełni system CRM w fundraisingu?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q11" value="a"> Tworzenie stron do zbiórek internetowych
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="b"> Automatyczne generowanie podziękowań dla darczyńców
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="c"> Zarządzanie kontaktami, historią relacji i komunikacją z darczyńcami
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="d"> Prowadzenie kampanii w mediach społecznościowych
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q12">
+                <h3>12. Na czym polega fundraising peer-to-peer?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q12" value="a"> Na bezpośrednich spotkaniach darczyńców z beneficjentami
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="b"> Na wymianie doświadczeń między fundraiserami z różnych organizacji
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="c"> Na zbieraniu funduszy przez wolontariuszy/ambasadorów wśród swoich znajomych i w swoich sieciach kontaktów
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="d"> Na wzajemnym wspieraniu się organizacji non-profit
+                    </label>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Pozyskiwanie i obsługa Darczyńców indywidualnych</h2>
+            
+            <div class="question" id="q13">
+                <h3>13. Co to jest LTV (Lifetime Value) darczyńcy?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q13" value="a"> Wiek darczyńcy określający jego potencjał fundraisingowy
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="b"> Całkowita wartość darowizn, jakie darczyńca przekazuje organizacji w całym okresie współpracy
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="c"> Czas, jaki upłynął od pierwszej do ostatniej darowizny
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="d"> Poziom zaangażowania darczyńcy w działania organizacji
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q14">
+                <h3>14. Co przedstawia piramida darczyńców?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q14" value="a"> Hierarchię darczyńców według ich majętności
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="b"> Model pokazujący różne poziomy zaangażowania darczyńców, od jednorazowych do największych/strategicznych
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="c"> Schemat organizacyjny zespołu fundraisingowego
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="d"> Strukturę kosztów pozyskania darczyńcy
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q15">
+                <h3>15. Które z poniższych działań najlepiej służy zwiększeniu lojalności darczyńców indywidualnych?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q15" value="a"> Wysyłanie im regularnych próśb o wsparcie
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="b"> Informowanie o sukcesach i wpływie ich darowizn na realizację misji organizacji
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="c"> Organizowanie jak największej liczby wydarzeń charytatywnych
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="d"> Wysyłanie im upominków rzeczowych
+                    </label>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Współpraca z biznesem</h2>
+            
+            <div class="question" id="q16">
+                <h3>16. Jaka jest różnica między darowizną biznesową a sponsoringiem?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q16" value="a"> Sponsoring jest zawsze większą kwotą niż darowizna
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="b"> Darowizny mogą przekazywać tylko duże firmy, a sponsoring także małe
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="c"> Darowizna jest wsparciem bez bezpośredniego świadczenia zwrotnego, a sponsoring jest umową, w której sponsor otrzymuje świadczenia reklamowe/promocyjne
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="d"> Darowizna może być tylko pieniężna, a sponsoring może być także rzeczowy
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q17">
+                <h3>17. Czym jest CSR (Corporate Social Responsibility) i jak łączy się z fundraisingiem?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q17" value="a"> To dział w firmie odpowiedzialny za przekazywanie darowizn dla NGO
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q17" value="b"> To strategia społecznej odpowiedzialności biznesu, w ramach której firmy mogą wspierać organizacje pozarządowe
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q17" value="c"> To rodzaj certyfikatu przyznawanego firmom za działania charytatywne
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q17" value="d"> To program rządowy zachęcający firmy do wspierania NGO
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q18">
+                <h3>18. Który z poniższych elementów jest kluczowy przy przygotowywaniu propozycji współpracy dla firmy?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q18" value="a"> Przedstawienie wyłącznie potrzeb organizacji
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q18" value="b"> Dostosowanie propozycji do potrzeb i celów biznesowych potencjalnego darczyńcy
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q18" value="c"> Załączenie wszystkich możliwych form współpracy
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q18" value="d"> Zaprezentowanie pełnej historii organizacji
+                    </label>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Współpraca z podmiotami instytucji państwowej</h2>
+            
+            <div class="question" id="q19">
+                <h3>19. Co to są koszty pośrednie (administracyjne) w projekcie grantowym?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q19" value="a"> Wydatki, które nie są bezpośrednio związane z konkretnymi działaniami projektu, ale są niezbędne do jego realizacji (np. koszty zarządzania, czynsz)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q19" value="b"> Koszty, które organizacja ponosi po zakończeniu projektu
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q19" value="c"> Wydatki, które nie zostały uwzględnione w początkowym budżecie
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q19" value="d"> Koszty, które muszą być pokryte z wkładu własnego organizacji
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question" id="q20">
+                <h3>20. Jakie elementy są najczęściej oceniane przy ewaluacji wniosków grantowych?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q20" value="a"> Wyłącznie budżet projektu
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q20" value="b"> Doświadczenie i rozpoznawalność organizacji
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q20" value="c"> Adekwatność do celów programu, metodologia, budżet, kompetencje zespołu, plan monitoringu i ewaluacji
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q20" value="d"> Wyłącznie zgodność z formalnymi wymogami konkursu
+                    </label>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button id="submit-btn" class="btn">Sprawdź wyniki</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="results">
+            <div class="result-header">
+                <h2>Wyniki testu kompetencji fundraisingowych</h2>
+                <p>Poniżej znajdziesz analizę Twoich kompetencji w poszczególnych obszarach fundraisingu.</p>
+            </div>
+            
+            <div class="result-details">
+                <div class="result-category">
+                    <h3>Wynik ogólny</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="total-progress"></div>
+                    </div>
+                    <p id="total-score"></p>
+                    <p id="level-description"></p>
+                    <div id="level-badge"></div>
+                </div>
+                
+                <h3>Wyniki w poszczególnych kategoriach:</h3>
+                
+                <div class="result-category">
+                    <h4>Zrozumienie sektora pozarządowego i regulacji prawnych</h4>
+                    <div class="progress-bar">
+                        <div class="progress" id="category1-progress"></div>
+                    </div>
+                    <p id="category1-score"></p>
+                </div>
+                
+                <div class="result-category">
+                    <h4>Planowanie fundraisingowe</h4>
+                    <div class="progress-bar">
+                        <div class="progress" id="category2-
